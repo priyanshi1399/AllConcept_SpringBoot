@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
-@Qualifier("onlineOrderObject")
-@Component
+//@Qualifier("onlineOrderObject")
+//@Component
 public class OnlineOrder implements Order {
 
 
