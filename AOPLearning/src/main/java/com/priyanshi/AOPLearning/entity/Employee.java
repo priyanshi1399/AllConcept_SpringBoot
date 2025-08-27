@@ -13,9 +13,14 @@ public class Employee {
     @Autowired
     EmployeeUtil employeeUtil;
 
-    @GetMapping(path="/fetchEmployee")
+  /*  @GetMapping(path="/fetchEmployee")
     public String fetchEmployee(){
         employeeUtil.employeeHelperMethod();
+        return "item fetched";
+    }*/
+
+    @GetMapping(path="/fetchEmployee2")
+    public String fetchEmployee(){
         return "item fetched";
     }
 }
