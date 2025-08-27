@@ -28,5 +28,17 @@ public class LoggingAspect {
     }
 
 
+    // its for methood for 0 or more item
+    @Before("execution( String com.priyanshi..fetchEmployee())")
+    public void beforeMethodExample(){
+        System.out.println("inside beforeMethodAspect example for package and subpackage");
+    }
+
+
+    @Before("execution( String com.priyanshi..*())")
+    public void beforeMethodExampleAnyMethod(){
+        System.out.println("inside beforeMethodAspect example for package and subpackage and matches method");
+    }
+
 
 }
