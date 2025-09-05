@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Async("myThreadPoolExecutor")
+    @Async
+            //@Async("myThreadPoolExecutor")
     public void getUserObject(){
         System.out.println("Inside getUser Async Method "+Thread.currentThread().getName());
         try {
