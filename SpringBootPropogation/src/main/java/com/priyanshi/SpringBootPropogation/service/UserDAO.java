@@ -9,7 +9,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class UserDAO {
 
 
-    @Transactional(propagation= Propagation.REQUIRED)
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
     public void method2() {
 
         //Execute db queries
