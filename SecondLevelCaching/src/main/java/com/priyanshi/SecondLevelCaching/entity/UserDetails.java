@@ -9,7 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 
 @Entity
-@Cache(usage= CacheConcurrencyStrategy.READ_WRITE,
+@Cache(usage= CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
 region="userDetailsCache")
 public class UserDetails {
 
