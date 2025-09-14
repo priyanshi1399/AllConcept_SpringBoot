@@ -10,25 +10,29 @@ indexes={
         @Index(name="index_phone",columnList="phone"),
         @Index(name="index_name_email",columnList="name,email")
 })
+//@IdClass(UserDetailsCK.class)
 @Entity
 public class UserDetails {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+   @Id
+   @GeneratedValue(strategy= GenerationType.SEQUENCE,generator = "unique_user_seq")
+   @SequenceGenerator(name = "unique_user_seq",sequenceName = "db-seq-name",initialValue = 100,allocationSize = 5)
     private Long Id;
     @Column(name="full_name",unique=true,nullable=false,length=255)
+    //@Id
     private String name;
     private String email;
     private String phone;
-
+    private String address;
     public UserDetails() {
     }
 
-    public UserDetails(Long id, String name, String email, String phone) {
+    public UserDetails(Long id, String name, String email, String phone,String address) {
         Id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.address=address;
     }
 
     public Long getId() {
@@ -61,5 +65,13 @@ public class UserDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
