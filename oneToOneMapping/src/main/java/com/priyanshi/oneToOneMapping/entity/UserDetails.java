@@ -12,7 +12,7 @@ public class UserDetails {
     private String name;
     private String phone;
 
-    @OneToOne(cascade=CascadeType.PERSIST)
+    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name="address_id",referencedColumnName="id")
     private UserAddress userAddress;
 
