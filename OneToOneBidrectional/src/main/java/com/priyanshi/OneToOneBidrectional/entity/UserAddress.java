@@ -1,10 +1,18 @@
 package com.priyanshi.OneToOneBidrectional.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-@Entity
 @Table(name="user_address")
+@Entity
+
+
+@JsonIdentityInfo(
+        generator= ObjectIdGenerators.PropertyGenerator.class,
+        property="id"
+)
 public class UserAddress {
 
         @Id
@@ -17,7 +25,7 @@ public class UserAddress {
         private String pinCode;
 
         @OneToOne(mappedBy = "userAddress" , fetch=FetchType.EAGER)
-        @JsonBackReference
+        //@JsonBackReference
         private UserDetails userDetails;
 
     public UserAddress() {

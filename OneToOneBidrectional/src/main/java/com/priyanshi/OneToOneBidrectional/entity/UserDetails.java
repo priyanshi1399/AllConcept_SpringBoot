@@ -1,10 +1,15 @@
 package com.priyanshi.OneToOneBidrectional.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-
-@Entity
 @Table(name="user_details")
+@Entity
+@JsonIdentityInfo(
+        generator= ObjectIdGenerators.PropertyGenerator.class,
+        property="id"
+)
 public class UserDetails {
 
     @Id
@@ -15,7 +20,7 @@ public class UserDetails {
 
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="address_id",referencedColumnName="id")
-    @JsonManagedReference
+   // @JsonManagedReference
     private UserAddress userAddress;
 
     public UserDetails() {
