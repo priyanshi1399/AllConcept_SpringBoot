@@ -1,5 +1,7 @@
 package com.priyanshi.oneToOneMapping.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.priyanshi.oneToOneMapping.DTO.UserDetailsDTO;
 import jakarta.persistence.*;
 
 @Table(name="user_details")
@@ -12,11 +14,16 @@ public class UserDetails {
     private String name;
     private String phone;
 
-    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+    @OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name="address_id",referencedColumnName="id")
+    //@JsonIgnore
     private UserAddress userAddress;
 
     public UserDetails() {
+    }
+
+    public UserDetailsDTO toDTO(){
+        return new UserDetailsDTO(this);
     }
 
     public UserDetails(Long id, String name, String phone, UserAddress userAddress) {

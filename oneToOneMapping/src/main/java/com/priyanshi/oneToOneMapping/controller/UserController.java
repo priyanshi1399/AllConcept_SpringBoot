@@ -1,6 +1,7 @@
 package com.priyanshi.oneToOneMapping.controller;
 
 
+import com.priyanshi.oneToOneMapping.DTO.UserDetailsDTO;
 import com.priyanshi.oneToOneMapping.entity.UserDetails;
 import com.priyanshi.oneToOneMapping.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,16 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userDetailsService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(path="/user/{id}")
+    public UserDetails getUser(@PathVariable Long id){
+        return userDetailsService.getUser(id);
+    }
+
+    //for DTO one
+    @GetMapping(path="/user1/{id}")
+    public UserDetailsDTO fetchUser(@PathVariable Long id){
+        return userDetailsService.findByID(id).toDTO();
     }
 }

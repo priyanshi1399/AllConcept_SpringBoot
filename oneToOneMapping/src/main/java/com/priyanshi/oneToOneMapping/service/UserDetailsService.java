@@ -4,6 +4,7 @@ import com.priyanshi.oneToOneMapping.entity.UserDetails;
 import com.priyanshi.oneToOneMapping.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -28,5 +29,14 @@ public class UserDetailsService {
 
     public void deleteUser(Long userId){
         userDetailsRepository.deleteById(userId);
+    }
+
+    public UserDetails getUser( Long primaryKey){
+        return userDetailsRepository.findById(primaryKey).get();
+    }
+
+    //for DTO One
+    public UserDetails findByID(Long primaryKey){
+        return userDetailsRepository.findById(primaryKey).get();
     }
 }
