@@ -5,6 +5,8 @@ import com.priyanshi.OneToOneMappingDemo.entity.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserDetailsService {
 
@@ -14,4 +16,6 @@ public class UserDetailsService {
     public UserDetails saveUser(UserDetails user){
         return userDetailsRepository.save(user);
     }
+
+
 }
