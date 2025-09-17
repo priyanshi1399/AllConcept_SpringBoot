@@ -12,8 +12,12 @@ public class UserDetails {
     private String name;
     private String phone;
 
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="address_id",referencedColumnName = "id")
+   @OneToOne(cascade=CascadeType.ALL)
+    //@JoinColumn(name="address_id",referencedColumnName = "id")
+   @JoinColumns({
+           @JoinColumn(name="address_street" ,referencedColumnName = "street"),
+           @JoinColumn(name="address_pin_code",referencedColumnName = "pinCode")
+   })
     private UserAddress userAddress;
 
     public UserDetails() {

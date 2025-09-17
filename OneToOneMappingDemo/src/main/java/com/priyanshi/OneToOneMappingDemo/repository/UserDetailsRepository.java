@@ -1,4 +1,4 @@
-package com.priyanshi.OneToOneMappingDemo.controller.repository;
+package com.priyanshi.OneToOneMappingDemo.repository;
 
 import com.priyanshi.OneToOneMappingDemo.entity.UserDetails;
 import com.priyanshi.OneToOneMappingDemo.service.UserDetailsService;
