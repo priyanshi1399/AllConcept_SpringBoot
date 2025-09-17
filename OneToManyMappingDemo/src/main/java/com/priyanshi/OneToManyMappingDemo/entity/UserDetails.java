@@ -1,8 +1,6 @@
 package com.priyanshi.OneToManyMappingDemo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -14,29 +12,31 @@ public class UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     private String name;
     private String phone;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_userId_fk", referencedColumnName = "userId")
     private List<OrderDetails> orderDetails = new ArrayList<>();
 
     public UserDetails() {
     }
 
-    public UserDetails(Long id, String name, String phone, List<OrderDetails> orderDetails) {
-        this.id = id;
+
+    public UserDetails(Long userId, String name, String phone, List<OrderDetails> orderDetails) {
+        this.userId = userId;
         this.name = name;
         this.phone = phone;
         this.orderDetails = orderDetails;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -61,5 +61,6 @@ public class UserDetails {
 
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
+
     }
 }
