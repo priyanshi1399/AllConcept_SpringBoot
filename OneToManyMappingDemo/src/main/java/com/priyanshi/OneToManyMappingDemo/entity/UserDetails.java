@@ -16,7 +16,7 @@ public class UserDetails {
     private String name;
     private String phone;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name="user_userId_fk", referencedColumnName = "userId")
     private List<OrderDetails> orderDetails = new ArrayList<>();
 
