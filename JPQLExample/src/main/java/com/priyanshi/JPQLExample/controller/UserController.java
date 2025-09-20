@@ -1,6 +1,7 @@
 package com.priyanshi.JPQLExample.controller;
 
 
+import com.priyanshi.JPQLExample.DTO.UserDTO;
 import com.priyanshi.JPQLExample.entity.UserDetails;
 import com.priyanshi.JPQLExample.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,15 @@ public class UserController {
         return userDetailsService.saveUser(userDetails);
     }
 
+    /*
     @GetMapping(path="/user")
     public ResponseEntity<List<UserDetails>> getDetailsByAddress(@RequestParam String name){
         List<UserDetails> user=userDetailsService.getUserByAddress(name);
         return ResponseEntity.ok(user);
+    }*/
+
+    @GetMapping(path="/user")
+    public List<UserDTO> getDetailsByAddress(@RequestParam String name){
+        return userDetailsService.findByNameDerived(name);
     }
 }

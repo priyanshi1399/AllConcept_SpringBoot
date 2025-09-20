@@ -11,8 +11,10 @@ import java.util.List;
 @Repository
 public interface UserDetailsRepository extends JpaRepository<UserDetails,Long> {
 
-    @Query("SELECT ud FROM UserDetails ud JOIN ud.userAddress ad WHERE ud.name=:userFirstName")
-    List<UserDetails> findUserDetailsWithAddress(@Param("userFirstName") String userName);
+    //@Query("SELECT ud FROM UserDetails ud JOIN ud.userAddress ad WHERE ud.name=:userFirstName")
+    //List<UserDetails> findUserDetailsWithAddress(@Param("userFirstName") String userName);
+    @Query("SELECT ud.name,ad.country FROM UserDetails ud JOIN ud.userAddress ad WHERE ud.name=:userFirstName")
+    List<Object[]> findUserDetailsWithAddress(@Param("userFirstName") String userName);
 
 
 }
