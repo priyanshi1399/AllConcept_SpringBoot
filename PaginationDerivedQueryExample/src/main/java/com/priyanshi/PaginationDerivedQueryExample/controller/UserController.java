@@ -22,10 +22,10 @@ public class UserController {
     }
 
     @GetMapping(path="/user/tryname_derivedA/{name}")
-    public ResponseEntity<Page<UserDetails>> getUserByName(@PathVariable String name,
+    public ResponseEntity<List<UserDetails>> getUserByName(@PathVariable String name,
                                                            @RequestParam(defaultValue="0") int page,
                                                            @RequestParam(defaultValue="5") int size){
-        Page<UserDetails> users=userDetailsService.findByNameDerived(name,page,size);
+        List<UserDetails> users=userDetailsService.findByNameDerived(name);
         return ResponseEntity.ok(users);
     }
 
