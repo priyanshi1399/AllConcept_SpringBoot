@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
@@ -14,6 +15,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfig {
 
     @Bean
+    /*
+    //by {noop}
     public UserDetailsService userDetailsService(){
         UserDetails user1= User.withUsername("my_username_1")
                 .password("{noop}my_password_1")
@@ -26,5 +29,15 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(user1,user2);
+        */
+
+    public UserDetailsService userDetailsService(){
+        UserDetails user1= User.withUsername("my_username_1")
+                .password("{bcrypt}" + new BCryptPasswordEncoder().encode("my_password_1"))
+                .roles("ADMIN")
+                .build();
+
+        return new InMemoryUserDetailsManager(user1);
+
     }
 }
