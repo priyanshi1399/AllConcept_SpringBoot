@@ -19,8 +19,8 @@ public class UserController {
     @Autowired
     UserRegisterEntityService userRegisterEntityService;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+   @Autowired
+   PasswordEncoder passwordEncoder;
 
     /*
     using this API to register the user into the system. username, password, role.

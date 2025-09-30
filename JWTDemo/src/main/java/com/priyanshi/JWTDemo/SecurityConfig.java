@@ -1,7 +1,12 @@
-package com.priyanshi.JWTDemo.config;
+package com.priyanshi.JWTDemo;
 
+
+import com.priyanshi.JWTDemo.AuthenticationProvider.JWTAuthenticationProvider;
 import com.priyanshi.JWTDemo.JWTAuthenticationFilter;
 import com.priyanshi.JWTDemo.JWtUtil;
+import com.priyanshi.JWTDemo.filter.JWTRefreshFilter;
+import com.priyanshi.JWTDemo.filter.JwtValidationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +14,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,16 +23,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.Arrays;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JWtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private JWtUtil jwtUtil;
+    private UserDetailsService userDetailsService;
 
+    @Autowired
     public SecurityConfig(JWtUtil jwtUtil, UserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+    public JWTAuthenticationProvider jwtAuthenticationProvider() {
+        return new JWTAuthenticationProvider(jwtUtil, userDetailsService);
     }
 
     @Bean
@@ -38,36 +51,41 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   AuthenticationManager authenticationManager,
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager,
                                                    JWtUtil jwtUtil) throws Exception {
 
         // Authentication filter responsible for login
-        JWTAuthenticationFilter jwtAuthFilter =
-                new JWTAuthenticationFilter(authenticationManager, jwtUtil);
+        JWTAuthenticationFilter jwtAuthFilter = new JWTAuthenticationFilter(authenticationManager, jwtUtil);
+
+        // Validation filter for checking JWT in every request
+        JwtValidationFilter jwtValidationFilter = new JwtValidationFilter(authenticationManager);
+
+        // refresh filter for checking JWT in every request
+        JWTRefreshFilter jwtRefreshFilter = new JWTRefreshFilter(jwtUtil, authenticationManager);
 
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/user-register").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/api/users").hasRole("USER")
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS)
-                )
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // generate token filter
+                .addFilterAfter(jwtValidationFilter, JWTAuthenticationFilter.class) // validate token filter
+              .addFilterAfter(jwtRefreshFilter, JwtValidationFilter.class); // refresh token filter
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(){
+    public AuthenticationManager authenticationManager() {
         return new ProviderManager(Arrays.asList(
-                daoAuthenticationProvider())
-        );
+                daoAuthenticationProvider(),
+                jwtAuthenticationProvider()
+        ));
     }
 }
