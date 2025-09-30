@@ -1,5 +1,6 @@
 package com.priyanshi.FormbasedAuthentication;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /*
     @Bean
 
     //by {noop}
@@ -29,7 +31,7 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(user1);
 
-    }
+    }*/
 
 
 
@@ -55,7 +57,7 @@ public class SecurityConfig {
         return http.build();
     }*/
 
-    @Bean
+    /*@Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((requests)->requests.anyRequest().authenticated())  .formLogin(form -> form
@@ -64,6 +66,24 @@ public class SecurityConfig {
         );
         http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
+        return http.build();
+    }*/
+
+    @Bean
+
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
+        http.authorizeHttpRequests(auth->auth.requestMatchers("/users")
+                .hasRole("USER").anyRequest().authenticated()
+        ).
+                 formLogin(form -> form
+                .failureHandler((request, response, exception) -> {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("Login failed: " + exception.getMessage());
+                })
+                 ).
+                sessionManagement(session->session.maximumSessions(1)
+                        .maxSessionsPreventsLogin(true)).
+      formLogin(Customizer.withDefaults());
         return http.build();
     }
 }
